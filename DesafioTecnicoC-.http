@@ -1,0 +1,6 @@
+@DesafioTecnicoC__HostAddress = http://localhost:5262
+
+GET {{DesafioTecnicoC__HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
