@@ -26,7 +26,7 @@ public class PessoaRepository
     ///<summary>
     ///Lista todas as pessoas cadastradas no banco de dados.
     ///</summary>
-    public async Task<IEnumerable<Pessoa>> ListarTodosAsync()
+    public async Task<IEnumerable<Pessoa>> ListarTodasPessoaAsync()
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql = "SELECT id,nome,idade FROM pessoas;";
@@ -47,9 +47,8 @@ public class PessoaRepository
     ///</summary>
     ///<param name="id">ID da pessoa editada.</param>
     ///<param name="pessoa">Novos dados da pessoa editada.</param>
-    public async Task AtualizarPessoa(int id, Pessoa pessoa)
+    public async Task AtualizarPessoaAsync(int id, Pessoa pessoa)
     {
-
         using var connection = new SqliteConnection(_connectionString);
         string sql = "UPDATE pessoas SET nome = @Nome, Idade = @Idade WHERE id=@Id";
         await connection.ExecuteAsync(sql, new { Id = id, Nome = pessoa.Nome, Idade = pessoa.Idade });
@@ -58,12 +57,11 @@ public class PessoaRepository
     ///Remove uma pessoa através do ID dela.
     ///</summary>
     ///<param name="id">ID da pessoa a ser removida. </param>
-    public async Task DeletarPessoa(int id)
+    public async Task DeletarPessoaAsync(int id)
     {
 
         using var connection = new SqliteConnection(_connectionString);
         string sql = "DELETE FROM pessoas WHERE id=@Id";
         await connection.ExecuteAsync(sql, new { Id = id });
     }
-
 }
