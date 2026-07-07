@@ -59,7 +59,6 @@ public class PessoaRepository
     ///<param name="id">ID da pessoa a ser removida. </param>
     public async Task DeletarPessoaAsync(int id)
     {
-
         using var connection = new SqliteConnection(_connectionString);
         string sql = "DELETE FROM pessoas WHERE id=@Id";
         await connection.ExecuteAsync(sql, new { Id = id });
