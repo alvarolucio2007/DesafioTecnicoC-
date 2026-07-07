@@ -62,5 +62,24 @@ public class TransacaoController: ControllerBase
   public async Task<ActionResult> AtualizarTransacao(int id, [FromBody] AtualizarTransacaoDTO dto){
       if (id<0) return BadRequest("Id precisa ser maior ou igual a 1.");
       if (dto.Id_Transacao <1 || dto.Id_Pessoa <1) return BadRequest("Id da transação e Id da pessoa precisam ambos serem maiores ou iguais a 1.");
+      try{
+        var transacaoAtualizada = new Transacao {Id:dto.Id_Transacao,Descricao:dto.Descricao,Valor:dto.Valor,Tipo:dto.Tipo,Id_Pessoa:dto.Id_Pessoa};
+        int linhasAfetadas = await _repository.AtualizarTransacaoAsync(id,transacaoAtualizada);
+        if (linhasAfetadas==0) return NotFound("Transação não encontrada.");
+        return Ok();
+      } catch (Exception ex){
+        return StatusCode(500,$"Erro interno ao atualizar banco de dados: {ex.Message}");
+      }
+  }
+  [HttpDelete("{id}")]
+  public async Task<ActionResult> DeletarTransacao(int id){
+    if (id<1) return BadRequest("Id precisa ser maior ou igual a 1.");
+    try{
+      int linhasAfetadas=await _repository.DeletarTransacaoAsync(id);
+      if (linhasAfetadas==0) return NotFound("Transação não encontrada.")
+      return Ok();
+    } catch (Exception ex){
+        return StatusCode(500,$"Erro interno ao atualizar banco de dados: {ex.Message}");
+      }
   }
 }
