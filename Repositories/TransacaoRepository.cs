@@ -48,22 +48,22 @@ public class TransacaoRepository
    ///</summary>
    ///<param name="id">ID da transacao para a mudança.</param>
    ///<param name="transacao">Novos dados da transação</param>
-    public async Task AtualizarTransacaoAsync(int id,Transacao transacao) 
+    public async Task<int> AtualizarTransacaoAsync(int id,Transacao transacao) 
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql = "UPDATE transacoes SET descricao = @Descricao, valor = @Valor,tipo = @Tipo, id_pessoa=@Id_Pessoa WHERE id=@Id";
-        await connection.ExecuteAsync(sql, new { Id = id, Descricao = transacao.Descricao, Valor = transacao.Valor, Tipo = transacao.Tipo, Id_Pessoa=transacao.Id_Pessoa });
+        return await connection.ExecuteAsync(sql, new { Id = id, Descricao = transacao.Descricao, Valor = transacao.Valor, Tipo = transacao.Tipo, Id_Pessoa=transacao.Id_Pessoa });
     }
 
     ///<summary>
     ///Remove uma transação através do ID dela.
     ///</summary>
     ///<param name="id">ID da transação a ser removida. </param>
-    public async Task DeletarTransacaoAsync(int id)
+    public async Task<int> DeletarTransacaoAsync(int id)
     {
 
         using var connection = new SqliteConnection(_connectionString);
         string sql = "DELETE FROM transacoes WHERE id=@Id";
-        await connection.ExecuteAsync(sql, new { Id = id });
+        return await connection.ExecuteAsync(sql, new { Id = id });
     }
 }
