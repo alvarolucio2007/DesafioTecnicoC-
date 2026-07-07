@@ -7,12 +7,12 @@ using DesafioTecnicoC.Repositories;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PessoasController : ControllerBase
+public class PessoaController : ControllerBase
 {
     private readonly PessoaRepository _repository;
 
     // O construtor recebe o seu repositório automaticamente via Injeção de Dependência
-    public PessoasController(PessoaRepository repository)
+    public PessoaController(PessoaRepository repository)
     {
         _repository = repository;
     }
@@ -54,7 +54,7 @@ public class PessoasController : ControllerBase
       }
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<PessoaRespostaDto?>> BuscarPorId(int id){
+    public async Task<ActionResult<PessoaRespostaDto>> BuscarPorId(int id){
       if (id<0) return BadRequest("Id precisa ser maior ou igual a 1.");
       try{
       var pessoa = await _repository.BuscarPorIdAsync(id);
