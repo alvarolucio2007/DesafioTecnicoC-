@@ -2,6 +2,7 @@ namespace DesafioTecnicoC.Models;
 
 public record Transacao
 {
+    public int Id {get;init;}
     public string Descricao { get; init; } = string.Empty;
     public double Valor { get; init; }
     public TipoTransacao Tipo { get; init; }
