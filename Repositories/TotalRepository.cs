@@ -15,7 +15,7 @@ public class RelatorioRepository{
     /// <summary>
     /// Relatório de todas as receitas e despesas, e saldo de cada pessoa.
     /// </summary>
-    public async Task<IEnumerable<RelatorioIndividual?>> ListarRelatoriosPessoalAsync(){
+    public async Task<IEnumerable<RelatorioIndividual>> ListarRelatoriosPessoalAsync(){
         using var connection = new SqliteConnection(_connectionString);
         string sql = """
           SELECT 
