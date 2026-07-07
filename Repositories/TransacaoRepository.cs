@@ -46,7 +46,7 @@ public class TransacaoRepository
    ///<summary>
    ///Atualiza uma transação baseada no ID dela.
    ///</summary>
-   ///<param name="id">ID da transacao para a pesquisa.</param>
+   ///<param name="id">ID da transacao para a mudança.</param>
    ///<param name="transacao">Novos dados da transação</param>
     public async Task AtualizarTransacaoAsync(int id,Transacao transacao) 
     {
