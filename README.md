@@ -9,8 +9,13 @@ Uma aplicação **Fullstack** completa para o gerenciamento e consolidação de 
 * **Persistência de Dados:** Dapper (Micro-ORM) & Microsoft.Data.Sqlite
 * **Documentação:** Swagger (OpenAPI) com suporte a comentários XML nativos
 
-### Front-end
-* **Ambiente:** Node.js (Configurado para comunicação na porta `5173`)
+###  Front-end
+
+* **Ambiente de Desenvolvimento:** Node.js (configurado por padrão na porta `5173`).
+* **Framework:** React com Vite (garantindo hot-reload ultrarrápido e build otimizado).
+* **Linguagem:** TypeScript (configurado com tipagem estrita para garantir consistência e segurança na compilação).
+* **Comunicação com a API:** Axios (centralizando as requisições HTTP para os endpoints do back-end em C#).
+* **Estilização:** CSS-in-JS / Estilos Inline (adotado para garantir portabilidade absoluta dos componentes, sem dependências externas de pré-processadores ou bibliotecas de terceiros).
 
 ## Arquitetura do Back-end
 
@@ -57,7 +62,7 @@ O projeto adota uma separação clara de responsabilidades:
    URL do Front-end: `http://localhost:5173`
    
 ---
-🔒 Considerações sobre o Banco de Dados (SQLite)
+ Considerações sobre o Banco de Dados (SQLite)
 
 O banco de dados roda localmente através do arquivo database.db localizado na raiz do projeto back-end.
 
