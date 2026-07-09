@@ -1,16 +1,15 @@
 using System.Text.Json.Serialization;
+using Dapper;
 using DesafioTecnicoC.Repositories;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configura a Connection String do SQLite
 string connectionString = "Data Source=database.db";
 
-// 2. ADICIONE ISSO: Ativa o suporte para Controllers na API
 builder.Services.AddControllers();
 
-// 3. ADICIONE ISSO: Registra o seu Repositório informando a Connection String
 builder.Services.AddScoped<PessoaRepository>(provider => new PessoaRepository(connectionString));
 builder.Services.AddScoped<TransacaoRepository>(provider => new TransacaoRepository(
     connectionString
@@ -19,7 +18,6 @@ builder.Services.AddScoped<RelatorioRepository>(provider => new RelatorioReposit
     connectionString
 ));
 
-// 4. ADICIONE ISSO: Configura o CORS para o seu React (Porta padrão 5173 do Vite ou 3000)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -43,23 +41,43 @@ builder
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    using var connection = new SqliteConnection(connectionString);
+    connection.Open();
 
+    var migrationSql = """
+        PRAGMA foreign_keys = ON;
+
+        CREATE TABLE IF NOT EXISTS pessoas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL UNIQUE,
+            idade INTEGER NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS transacoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            descricao TEXT NOT NULL,
+            valor DECIMAL(10,2) NOT NULL,
+            tipo TEXT NOT NULL CHECK(tipo IN ('CREDITO', 'DEBITO')),
+            id_pessoa INTEGER NOT NULL,
+            FOREIGN KEY (id_pessoa) REFERENCES pessoas(id) ON DELETE CASCADE
+        );
+        """;
+
+    await Dapper.SqlMapper.ExecuteAsync(connection, migrationSql);
+}
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-
-    // Dica extra: Se quiser habilitar a interface visual do Swagger para testar:
-    // app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "v1"));
 }
 
 app.UseHttpsRedirection();
 
-// 5. ADICIONE ISSO: Ativa a política de CORS que criamos lá em cima
 app.UseCors("AllowReact");
 
 app.UseAuthorization();
 
-// 6. ADICIONE ISSO: Mapeia os endpoints dos seus Controllers automaticamente
 app.MapControllers();
 
 app.Run();
