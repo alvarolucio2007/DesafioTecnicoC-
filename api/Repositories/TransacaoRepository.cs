@@ -18,7 +18,7 @@ public class TransacaoRepository
     /// Insere uma nova transação associada a uma pessoa via FK
     /// </summary>
     /// <param name="transacao">Dados da transação</param>
-    public async Task InserirTransacaoAsync(Transacao transacao)
+    public async Task InserirTransacaoAsync(TransacaoModel transacao)
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql =
@@ -38,23 +38,23 @@ public class TransacaoRepository
     ///<summary>
     ///Listar todas as transações no banco de dados.
     ///</summary>
-    public async Task<IEnumerable<Transacao>> ListarTodosTransacaoAsync()
+    public async Task<IEnumerable<TransacaoModel>> ListarTodosTransacaoAsync()
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql = "SELECT id,descricao,valor,tipo,id_pessoa FROM transacoes;";
-        return await connection.QueryAsync<Transacao>(sql);
+        return await connection.QueryAsync<TransacaoModel>(sql);
     }
 
     ///<summary>
     ///Lista todas as transações associadas a uma pessoa específica através do ID dela.
     ///</summary>
     ///<param name="id">ID da pessoa para a pesquisa.</param>
-    public async Task<IEnumerable<Transacao>> ListarTransacaoPessoaAsync(int id)
+    public async Task<IEnumerable<TransacaoModel>> ListarTransacaoPessoaAsync(int id)
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql =
             "SELECT id,descricao,valor,tipo,id_pessoa FROM transacoes WHERE id_pessoa = @Id_Pessoa;";
-        return await connection.QueryAsync<Transacao>(sql, new { Id_Pessoa = id });
+        return await connection.QueryAsync<TransacaoModel>(sql, new { Id_Pessoa = id });
     }
 
     ///<summary>
@@ -62,7 +62,7 @@ public class TransacaoRepository
     ///</summary>
     ///<param name="id">ID da transacao para a mudança.</param>
     ///<param name="transacao">Novos dados da transação</param>
-    public async Task<int> AtualizarTransacaoAsync(int id, Transacao transacao)
+    public async Task<int> AtualizarTransacaoAsync(int id, TransacaoModel transacao)
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql =

@@ -17,7 +17,7 @@ public class RelatorioRepository
     /// <summary>
     /// Relatório de todas as receitas e despesas, e saldo de cada pessoa.
     /// </summary>
-    public async Task<IEnumerable<RelatorioIndividual>> ListarRelatoriosPessoalAsync()
+    public async Task<IEnumerable<RelatorioIndividualModel>> ListarRelatoriosPessoalAsync()
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql = """
@@ -32,13 +32,13 @@ public class RelatorioRepository
             LEFT JOIN transacoes t ON p.id = t.id_pessoa
             GROUP BY p.id, p.nome;
             """;
-        return await connection.QueryAsync<RelatorioIndividual>(sql);
+        return await connection.QueryAsync<RelatorioIndividualModel>(sql);
     }
 
     /// <summary>
     /// Relatório geral de todos os totais, de receita, despesa e saldo.
     /// </summary>
-    public async Task<RelatorioGeral?> ListarRelatorioGeralAsync()
+    public async Task<RelatorioGeralModel?> ListarRelatorioGeralAsync()
     {
         using var connection = new SqliteConnection(_connectionString);
         string sql = """
@@ -49,6 +49,6 @@ public class RelatorioRepository
                 COALESCE(SUM(CASE WHEN tipo = 'DEBITO' THEN valor END), 0) AS SaldoLiquidoGeral
             FROM transacoes;
             """;
-        return await connection.QueryFirstOrDefaultAsync<RelatorioGeral>(sql);
+        return await connection.QueryFirstOrDefaultAsync<RelatorioGeralModel>(sql);
     }
 }
