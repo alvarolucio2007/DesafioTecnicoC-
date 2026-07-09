@@ -7,7 +7,7 @@ Uma aplicação **Fullstack** completa para o gerenciamento e consolidação de 
 ### Back-end
 * **Runtime:** .NET 9 (C#) / ASP.NET Core Web API
 * **Persistência de Dados:** Dapper (Micro-ORM) & Microsoft.Data.Sqlite
-* **Documentação:** Swagger (OpenAPI) com suporte a comentários XML nativos
+* **Documentação:** Comentários XML nativos
 
 ###  Front-end
 
